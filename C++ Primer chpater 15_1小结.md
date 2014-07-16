@@ -154,24 +154,6 @@
 		
 	也即是，private继承让其基类的成员都变成了private，类似地，protected继承让其基类都变成了protected。
 		
-11.  虚析构函数
-
-	继承关系对基类拷贝构造最直接的影响是基类通常应该定义一个**虚析构函数**，这样我们就能动态分配继承体系中的对象了。
-	
-	当我们delete一个动态分配的对象的指针时将执行析构函数。如果该指针指向继承体系中的某个类型，则又可能出现指针的静态类型与被删除对象的动态类型不符的情况。例如当我们delete一个`Quote*`类型的指针，则该指针有可能实际指向了一个`Bulk_quote`类型的对象。这样的话，编译器就必须清楚它应该执行的时`Bulk_quote`的析构函数。
-	
-		class Quote {
-		public:
-			virtual ~Quote() = default;
-		};	
-		
-		Quote *itemp = new Quote;     // 静态类型与动态类型一致
-		delete itemP;                 // 调用Quote的析构函数
-		itemP = new Bulk_quote;       // 静态类型与动态类型不一致
-		delete itemP;                 // 调用Bulk_quote的析构函数
-	
-	
-12.  
 	
 
 
