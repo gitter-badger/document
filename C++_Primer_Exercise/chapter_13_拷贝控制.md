@@ -96,6 +96,8 @@
 		    
 		    HasPtr(const HasPtr& rhs) : ps(new std::string(*(rhs.ps))), i(rhs.i) { }
 		    
+		    ~HasPtr() { delete ps; }
+		    
 		    void print() const 
 		    {
 		    	cout << *ps << endl;
