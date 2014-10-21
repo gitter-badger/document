@@ -11,14 +11,51 @@
 
 让我们先用一小段代码来直观了解一下`RVO`（**我使用的是g++ 4.7.3**）:
 
-	#include <iostream>	using namespace std;	class Foo {	public:    	Foo() { cout << "Foo()" << endl; }    	Foo(const Foo& f) { cout << "Foo(const Foo& f)" << endl; }    	~Foo() { }	};	Foo bar()           // return value copy will call copy constructor in theory	{    	cout << "bar()" << endl;    	return Foo();   // it will call Foo default constructor	}	int main()	{    	Foo f = bar();    	return 0;	}
-这么一小段代码，根据教科书的说法，我们**理论上**应该可以观察到：
-`bar()`内部会call一次Foo的默认构造函数
-`bar()`内部函数返回值会call一次拷贝构造函数
-创建`f`的时候会以`bar()`的返回值为复制对象call一次拷贝构造函数
-实际代码运行结果是：
-	nick@GGUbuntu:c++11_move$ ./test_RVO.o 	bar()	Foo()
-**没有拷贝构造函数的调用**！这就是`RVO`的作用。通过函数返回值来直接创建对象。
-如果我们不想使用`RVO`，可以在g++编译的时候加入`-fno-elide-construtors`。这时的运行结果是：
-	nick@GGUbuntu:c++11_move$ ./a.out 	bar()	Foo()	Foo(const Foo& f)	Foo(const Foo& f)
-跟我们理论设想是一致的。
+```c++
+	#include <iostream>
+
+	using namespace std;
+
+	class Foo {
+	public:
+    	Foo() { cout << "Foo()" << endl; }
+    	Foo(const Foo& f) { cout << "Foo(const Foo& f)" << endl; }
+    	~Foo() { }
+	};
+
+	Foo bar()           // return value copy will call copy constructor in theory
+	{
+    	cout << "bar()" << endl;
+    	return Foo();   // it will call Foo default constructor
+	}
+
+	int main()
+	{
+    	Foo f = bar();
+    	return 0;
+	}
+```
+这么一小段代码，根据教科书的说法，我们**理论上**应该可以观察到：
+
+`bar()`内部会call一次Foo的默认构造函数
+
+`bar()`内部函数返回值会call一次拷贝构造函数
+
+创建`f`的时候会以`bar()`的返回值为复制对象call一次拷贝构造函数
+
+实际代码运行结果是：
+
+	nick@GGUbuntu:c++11_move$ ./test_RVO.o 
+	bar()
+	Foo()
+
+**没有拷贝构造函数的调用**！这就是`RVO`的作用。通过函数返回值来直接创建对象。
+
+如果我们不想使用`RVO`，可以在g++编译的时候加入`-fno-elide-construtors`。这时的运行结果是：
+
+	nick@GGUbuntu:c++11_move$ ./a.out 
+	bar()
+	Foo()
+	Foo(const Foo& f)
+	Foo(const Foo& f)
+跟我们理论设想是一致的。
