@@ -1,6 +1,8 @@
 ### document ###
 ----------------------
 
+[![Join the chat at https://gitter.im/GhostComputing/document](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/GhostComputing/document?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 顾名思义，这个document的Project主要存档一些技术书籍的读书笔记，它可能是
 
 - 对某本书籍不假思索的摘抄
